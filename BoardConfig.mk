@@ -53,16 +53,13 @@ BOARD_KERNEL_CMDLINE += androidboot.usbcontroller=a600000.dwc3
 BOARD_KERNEL_CMDLINE += androidboot.hardware=judypn
 BOARD_KERNEL_CMDLINE += androidboot.fastboot=1
 BOARD_KERNEL_CMDLINE += androidboot.selinux=permissive
-#BOARD_KERNEL_CMDLINE += skip_initramfs
-#BOARD_KERNEL_CMDLINE += androidboot.product.lge.op_verity=1
-#BOARD_KERNEL_CMDLINE += ignore_loglevel
-#BOARD_KERNEL_CMDLINE += firmware_class.path=/firmware/image
-#BOARD_KERNEL_CMDLINE += loop.max_part=7
+BOARD_KERNEL_CMDLINE += firmware_class.path=/vendor/firmware_mnt/image
+BOARD_KERNEL_CMDLINE += loop.max_part=7
 TARGET_KERNEL_ARCH := arm64
 TARGET_KERNEL_HEADER_ARCH := arm64
 BOARD_KERNEL_BASE := 0x00000000
 BOARD_KERNEL_PAGESIZE := 4096
-TARGET_PREBUILT_KERNEL := device/lge/judypn/prebuilt/Image_oreo_2.gz-dtb
+TARGET_PREBUILT_KERNEL := device/lge/judypn/prebuilt/Image.gz-dtb
 
 # Platform
 TARGET_BOARD_PLATFORM := sdm845
@@ -120,7 +117,7 @@ TW_HAS_EDL_MODE := true
 TW_IGNORE_MISC_WIPE_DATA := true
 
 # Encryption
-PLATFORM_SECURITY_PATCH := 2019-01-01
+PLATFORM_SECURITY_PATCH := 2019-05-01
 TW_INCLUDE_CRYPTO := true
 #TW_INCLUDE_CRYPTO_FBE := true
 #TARGET_USE_UFS_ICE := true
