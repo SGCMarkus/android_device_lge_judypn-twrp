@@ -28,12 +28,16 @@
 import /init.recovery.judypn_decrypt.rc
 
 on init
-    export ANDROID_ROOT /system_root
     start boot-1-0
 
 on fs
     wait /dev/block/platform/soc/${ro.boot.bootdevice}
     symlink /dev/block/platform/soc/${ro.boot.bootdevice} /dev/block/bootdevice
+
+# This helps fix ld.config.txt errors from the linker on Android 8.1+
+#service ldconfigtxt /sbin/touch /sbin/ld.config.txt
+#    oneshot
+#    seclabel u:r:recovery:s0
 
 on boot
     export LD_CONFIG_FILE /sbin/ld.config.txt

@@ -1,11 +1,15 @@
 on early-init
     wait /dev/block/bootdevice
-    start patchlevel
+#    start patchlevel
 
 on init
     start sbinqseecomd
 
 on property:init.svc.sbinqseecomd=running && property:sys.listeners.registered=true
+    start sbinhwservicemanager
+    start sbinservicemanager
+
+on property:init.svc.sbinqseecomd=running && property:vendor.sys.listeners.registered=true
     start sbinhwservicemanager
     start sbinservicemanager
 
@@ -29,12 +33,12 @@ on property:ro.crypto.fs_crypto_blkdev=*
     # Need to free up the /system path for install zips to use
     start mounts
 
-service patchlevel /sbin/patchlevel.sh
-    user root
-    group root
-    disabled
-    oneshot
-    seclabel u:r:recovery:s0
+#service patchlevel /sbin/patchlevel.sh
+#    user root
+#    group root
+#    disabled
+#    oneshot
+#    seclabel u:r:recovery:s0
 
 service sbinqseecomd /sbin/qseecomd
     user root

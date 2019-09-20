@@ -28,7 +28,7 @@ $(call inherit-product, device/lge/judypn/device.mk)
 ## Device identifier. This must come after all inclusions
 PRODUCT_DEVICE := judypn
 PRODUCT_NAME := omni_judypn
-PRODUCT_BRAND := LGE
+PRODUCT_BRAND := lge
 PRODUCT_MODEL := LG V40
 PRODUCT_MANUFACTURER := LGE
 
