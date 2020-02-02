@@ -128,9 +128,6 @@ TW_HAS_EDL_MODE := true
 
 TARGET_RECOVERY_DEVICE_MODULES += tzdata
 TARGET_RECOVERY_DEVICE_MODULES += android.hardware.boot@1.0 hwservicemanager servicemanager libxml2 keystore libicuuc android.hidl.base@1.0
-#TW_RECOVERY_ADDITIONAL_RELINK_FILES := $(OUT_DIR)/system/lib64/android.hardware.boot@1.0.so $(OUT_DIR)/system/usr/share/zoneinfo/tzdata
-#TW_RECOVERY_ADDITIONAL_RELINK_FILES += $(OUT_DIR)/system/bin/hwservicemanager $(OUT_DIR)/system/bin/servicemanager $(OUT_DIR)/system/lib64/libxml2.so
-#TW_RECOVERY_ADDITIONAL_RELINK_FILES += $(OUT_DIR)/system/lib64/hw/keystore.default.so $(OUT_DIR)/system/lib64/libicuuc.so $(OUT_DIR)/system/lib64/android.hidl.base@1.0.so
 
 TARGET_RECOVERY_PIXEL_FORMAT := BGRA_8888
 TARGET_RECOVERY_QCOM_RTC_FIX := true
@@ -159,8 +156,10 @@ PLATFORM_SECURITY_PATCH := 2019-05-01
 TARGET_HW_DISK_ENCRYPTION := true
 TARGET_CRYPTFS_HW_PATH := vendor/qcom/opensource/commonsys/cryptfs_hw
 TW_INCLUDE_CRYPTO := true
+TARGET_HW_DISK_ENCRYPTION := true
+LEGACY_HW_DISK_ENCRYPTION := true
 TW_CRYPTO_USE_SYSTEM_VOLD := hwservicemanager servicemanager qseecomd keymaster-3-0
-TW_CRYPTO_SYSTEM_VOLD_MOUNT := vendor
+TW_CRYPTO_SYSTEM_VOLD_MOUNT := vendor firmware persist-lg
 
 # TWRP Debug Flags
 #TWRP_EVENT_LOGGING := true

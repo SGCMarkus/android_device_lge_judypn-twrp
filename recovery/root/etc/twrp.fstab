@@ -4,7 +4,7 @@
 /system_image		emmc	/dev/block/bootdevice/by-name/system					flags=slotselect;flashimg=1
 /vendor			ext4	/dev/block/bootdevice/by-name/vendor					flags=slotselect;display="Vendor";backup=1
 /vendor_image		emmc	/dev/block/bootdevice/by-name/vendor					flags=slotselect;flashimg=1
-/data			ext4	/dev/block/bootdevice/by-name/userdata					flags=encryptable=/dev/block/bootdevice/by-name/encrypt
+/data			ext4	/dev/block/bootdevice/by-name/userdata					flags=encryptable=/dev/block/bootdevice/by-name/encrypt;length=-134217728
 /firmware		vfat	/dev/block/bootdevice/by-name/modem					flags=slotselect;display="Firmware";mounttodecrypt;fsflags=context=u:object_r:firmware_file:s0
 /misc			emmc	/dev/block/bootdevice/by-name/misc
 /modem			emmc	/dev/block/bootdevice/by-name/modem					flags=slotselect;backup=1;display="Modem"
