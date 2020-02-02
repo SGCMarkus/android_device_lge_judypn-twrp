@@ -55,7 +55,7 @@ BOARD_KERNEL_CMDLINE += lpm_levels.sleep_disabled=1 service_locator.enable=1
 BOARD_KERNEL_CMDLINE += swiotlb=2048 androidboot.configfs=true
 BOARD_KERNEL_CMDLINE += androidboot.usbcontroller=a600000.dwc3
 BOARD_KERNEL_CMDLINE += androidboot.hardware=judypn
-BOARD_KERNEL_CMDLINE += androidboot.fastboot=1
+BOARD_KERNEL_CMDLINE += disable_skip_initramfs
 BOARD_KERNEL_CMDLINE += androidboot.selinux=permissive
 BOARD_KERNEL_CMDLINE += firmware_class.path=/firmware/image
 BOARD_KERNEL_CMDLINE += loop.max_part=7
@@ -150,16 +150,18 @@ TW_IGNORE_MISC_WIPE_DATA := true
 # Must match build.prop of current system for vold decrypt to work properly!
 PLATFORM_VERSION := 9.0.0
 # OTA V405EBW v20a
-PLATFORM_SECURITY_PATCH := 2019-05-01
+PLATFORM_SECURITY_PATCH := 2019-11-01
 
 # Encryption
 TARGET_HW_DISK_ENCRYPTION := true
 TARGET_CRYPTFS_HW_PATH := vendor/qcom/opensource/commonsys/cryptfs_hw
 TW_INCLUDE_CRYPTO := true
+TW_INCLUDE_CRYPTO_FBE := true
+TARGET_USE_UFS_ICE := true
 TARGET_HW_DISK_ENCRYPTION := true
 LEGACY_HW_DISK_ENCRYPTION := true
 TW_CRYPTO_USE_SYSTEM_VOLD := hwservicemanager servicemanager qseecomd keymaster-3-0
-TW_CRYPTO_SYSTEM_VOLD_MOUNT := vendor firmware persist-lg
+TW_CRYPTO_SYSTEM_VOLD_MOUNT := vendor firmware persist-lg system
 
 # TWRP Debug Flags
 #TWRP_EVENT_LOGGING := true
