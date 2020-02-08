@@ -119,6 +119,8 @@ TW_Y_OFFSET := 90
 TW_H_OFFSET := -90
 TW_THEME := portrait_hdpi
 
+TW_HAPTICS_TSPDRV := true
+
 TW_EXCLUDE_DEFAULT_USB_INIT := true
 TW_EXCLUDE_SUPERSU := true
 TW_EXTRA_LANGUAGES := true
@@ -127,7 +129,7 @@ TW_INPUT_BLACKLIST := "hbtp_vm"
 TW_HAS_EDL_MODE := true
 
 TARGET_RECOVERY_DEVICE_MODULES += tzdata
-TARGET_RECOVERY_DEVICE_MODULES += android.hardware.boot@1.0 hwservicemanager servicemanager libxml2 keystore libicuuc android.hidl.base@1.0
+TARGET_RECOVERY_DEVICE_MODULES += android.hardware.boot@1.0 android.hidl.base@1.0 libcryptfs_hw
 
 TARGET_RECOVERY_PIXEL_FORMAT := BGRA_8888
 TARGET_RECOVERY_QCOM_RTC_FIX := true
@@ -150,7 +152,7 @@ TW_IGNORE_MISC_WIPE_DATA := true
 # Must match build.prop of current system for vold decrypt to work properly!
 PLATFORM_VERSION := 9.0.0
 # OTA V405EBW v20a
-PLATFORM_SECURITY_PATCH := 2019-11-01
+PLATFORM_SECURITY_PATCH := 2019-05-01
 
 # Encryption
 TARGET_HW_DISK_ENCRYPTION := true
@@ -160,15 +162,15 @@ TW_INCLUDE_CRYPTO_FBE := true
 TARGET_USE_UFS_ICE := true
 TARGET_HW_DISK_ENCRYPTION := true
 LEGACY_HW_DISK_ENCRYPTION := true
-TW_CRYPTO_USE_SYSTEM_VOLD := hwservicemanager servicemanager qseecomd keymaster-3-0
-TW_CRYPTO_SYSTEM_VOLD_MOUNT := vendor firmware persist-lg system
+TW_CRYPTO_USE_SYSTEM_VOLD := hwservicemanager servicemanager qseecomd keymaster-3-0-qti
+TW_CRYPTO_SYSTEM_VOLD_MOUNT := vendor firmware persist-lg system_root
 
 # TWRP Debug Flags
 #TWRP_EVENT_LOGGING := true
-#TARGET_USES_LOGD := true
-#TWRP_INCLUDE_LOGCAT := true
+TARGET_USES_LOGD := true
+TWRP_INCLUDE_LOGCAT := true
 #TARGET_RECOVERY_DEVICE_MODULES += debuggerd strace
 #TW_RECOVERY_ADDITIONAL_RELINK_FILES += $(OUT)/system/bin/debuggerd $(OUT)/system/xbin/strace
 #TARGET_RECOVERY_DEVICE_MODULES += twrpdec
 #TW_RECOVERY_ADDITIONAL_RELINK_FILES += $(TARGET_RECOVERY_ROOT_OUT)/sbin/twrpdec
-#TW_CRYPTO_SYSTEM_VOLD_DEBUG := true
+TW_CRYPTO_SYSTEM_VOLD_DEBUG := true

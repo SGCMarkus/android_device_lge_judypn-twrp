@@ -28,7 +28,9 @@
 import /init.recovery.judypn_decrypt.rc
 
 on init
+    export ANDROID_ROOT /system_root
     start boot-1-0
+    start patchlevel
 
 on fs
     wait /dev/block/platform/soc/${ro.boot.bootdevice}
@@ -41,8 +43,6 @@ on fs
 on post-fs
     chown system system /persist-lg
     chmod 0771 /persist-lg
-    start ven_qseecomd
-    exec - system system -- /vendor/bin/init.qti.qseecomd.sh
     write /dev/ipa 1
 
 on post-fs-data
@@ -58,6 +58,7 @@ on boot
 
     # Workaround for adb not coming up
     setprop sys.usb.config adb
+    wait /sbin/patchlevel_set
 
 service boot-1-0 /sbin/android.hardware.boot@1.0-service
     user root
@@ -99,38 +100,40 @@ service gatekeeperd /system/bin/gatekeeperd /data/misc/gatekeeper
     user system
     writepid /dev/cpuset/system-background/tasks
 
-on init
-    start sys_hwservicemanager
+on property:fde.ready=1 && property:patchlevel.done=*
+    start ven_qseecomd
+    exec - system system -- /vendor/bin/init.qti.qseecomd.sh
 
-on property:sys.listeners.registered=true
-    start ven_keymaster-3-0
-    start gatekeeper-1-0
-    start gatekeeperd
+on property:crypto.ready=1 && property:patchlevel.done=*
+    start ven_qseecomd
+    exec - system system -- /vendor/bin/init.qti.qseecomd.sh
+
+on property:init.svc.ven_qseecomd=running && property:sys.listeners.registered=true
+    start sys_hwservicemanager
     start sys_servicemanager
     start vndservicemanager
+
+on property:init.svc.sys_hwservicemanager=running && property:hwservicemanager.ready=true
+    start ven_keymaster-3-0-qti
+    start gatekeeper-1-0
+    start gatekeeperd
+
+on property:crypto.ready=0
+    stop ven_qseecomd
+    stop sys_servicemanager
+    stop ven_keymaster-3-0-qti
+    stop gatekeeper-1-0
+    stop gatekeeperd
 
 on property:product.lge.vold.publicvolume_uuid=*
     setprop vendor.lge.vold.publicvolume_uuid ${product.lge.vold.publicvolume_uuid}
 
-service uncrypt /system/bin/uncrypt
-    class main
-    socket uncrypt stream 600 system system
+service patchlevel /sbin/patchlevel.sh
+    user root
+    group root
     disabled
     oneshot
-
-service setup-bcb /system/bin/uncrypt --setup-bcb
-    class main
-    socket uncrypt stream 600 system system
-    disabled
-    oneshot
-
-service clear-bcb /system/bin/uncrypt --clear-bcb
-    class main
-    socket uncrypt stream 600 system system
-    disabled
-    oneshot
-
-
+    seclabel u:r:recovery:s0
 
 
 

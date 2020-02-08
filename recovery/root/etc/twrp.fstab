@@ -1,6 +1,6 @@
 # mount point		fstype	device					device2				flags
 /boot			emmc	/dev/block/bootdevice/by-name/boot					flags=slotselect
-/system			ext4	/dev/block/bootdevice/by-name/system					flags=slotselect
+/system_root		ext4	/dev/block/bootdevice/by-name/system					flags=slotselect;display="System";backup=1
 /system_image		emmc	/dev/block/bootdevice/by-name/system					flags=slotselect;flashimg=1
 /vendor			ext4	/dev/block/bootdevice/by-name/vendor					flags=slotselect;display="Vendor";backup=1
 /vendor_image		emmc	/dev/block/bootdevice/by-name/vendor					flags=slotselect;flashimg=1
@@ -23,4 +23,4 @@
 
 # Removable storage
 /usb-otg		vfat	/dev/block/sdh1 			/dev/block/sdh			flags=display="USB-OTG";storage;wipeingui;removable
-/external_sd		vfat	/dev/block/mmcblk0p1 			/dev/block/mmcblk0		flags=display="mSDcard";storage;wipeingui;removable;encryptable=/dev/block/bootdevice/by-name/encrypt
+/external_sd		vfat	/dev/block/mmcblk0p1 			/dev/block/mmcblk0		flags=display="mSDcard";storage;wipeingui;removable;encryptable=footer
