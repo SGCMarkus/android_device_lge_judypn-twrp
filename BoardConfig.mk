@@ -49,6 +49,7 @@ TARGET_NO_BOOTLOADER := true
 TARGET_USES_UEFI := true
 
 # Kernel
+BOARD_BOOTIMG_HEADER_VERSION := 1
 BOARD_KERNEL_CMDLINE += video=vfb:640x400,bpp=32,memsize=3072000
 BOARD_KERNEL_CMDLINE += msm_rtb.filter=0x237 ehci-hcd.park=3
 BOARD_KERNEL_CMDLINE += lpm_levels.sleep_disabled=1 service_locator.enable=1
@@ -63,6 +64,9 @@ TARGET_KERNEL_ARCH := arm64
 TARGET_KERNEL_HEADER_ARCH := arm64
 BOARD_KERNEL_BASE := 0x00000000
 BOARD_KERNEL_PAGESIZE := 4096
+TARGET_PREBUILT_DTBO := device/lge/judypn/prebuilt/dtbo.img
+BOARD_MKBOOTIMG_ARGS := --header_version $(BOARD_BOOTIMG_HEADER_VERSION)
+BOARD_MKBOOTIMG_ARGS += --recovery_dtbo $(TARGET_PREBUILT_DTBO)
 TARGET_PREBUILT_KERNEL := device/lge/judypn/prebuilt/Image.gz-dtb
 
 # Platform
@@ -150,9 +154,9 @@ TW_IGNORE_MISC_WIPE_DATA := true
 #PLATFORM_VERSION := 16.1.0
 #PLATFORM_SECURITY_PATCH := 2025-12-05
 # Must match build.prop of current system for vold decrypt to work properly!
-PLATFORM_VERSION := 9.0.0
+PLATFORM_VERSION := 10.0.0
 # OTA V405EBW v20a
-PLATFORM_SECURITY_PATCH := 2019-05-01
+PLATFORM_SECURITY_PATCH := 2020-07-01
 
 # Encryption
 TARGET_HW_DISK_ENCRYPTION := true
