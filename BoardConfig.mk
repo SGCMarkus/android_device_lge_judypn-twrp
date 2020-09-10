@@ -55,11 +55,10 @@ BOARD_KERNEL_CMDLINE += msm_rtb.filter=0x237 ehci-hcd.park=3
 BOARD_KERNEL_CMDLINE += lpm_levels.sleep_disabled=1 service_locator.enable=1
 BOARD_KERNEL_CMDLINE += swiotlb=2048 androidboot.configfs=true
 BOARD_KERNEL_CMDLINE += androidboot.usbcontroller=a600000.dwc3
+BOARD_KERNEL_CMDLINE += loop.max_part=7
 BOARD_KERNEL_CMDLINE += androidboot.hardware=judypn
 BOARD_KERNEL_CMDLINE += disable_skip_initramfs
 BOARD_KERNEL_CMDLINE += androidboot.selinux=permissive
-BOARD_KERNEL_CMDLINE += firmware_class.path=/firmware/image
-BOARD_KERNEL_CMDLINE += loop.max_part=7
 TARGET_KERNEL_ARCH := arm64
 TARGET_KERNEL_HEADER_ARCH := arm64
 BOARD_KERNEL_BASE := 0x00000000
@@ -106,8 +105,6 @@ BOARD_HAS_NO_SELECT_BUTTON := true
 AB_OTA_UPDATER := true
 BOARD_USES_RECOVERY_AS_BOOT := true
 BOARD_BUILD_SYSTEM_ROOT_IMAGE := true
-#BOARD_PROVIDES_GPTUTILS := true
-#USE_COMMON_BOOTCTRL := false
 
 # A/B updater updatable partitions list. Keep in sync with the partition list
 # with "_a" and "_b" variants in the device. Note that the vendor can add more
@@ -157,7 +154,7 @@ TW_IGNORE_MISC_WIPE_DATA := true
 
 # Custom Platform Version and Security Patch
 PLATFORM_VERSION := 16.1.0
-PLATFORM_SECURITY_PATCH := 2099-12-31
+PLATFORM_SECURITY_PATCH := 2025-12-31
 
 # Encryption
 TW_INCLUDE_CRYPTO := true

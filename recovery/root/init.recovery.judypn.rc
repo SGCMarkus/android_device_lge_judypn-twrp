@@ -28,7 +28,6 @@
 import /init.recovery.judy_decrypt.rc
 
 on init
-    export ANDROID_ROOT /system_root
     start logd
     start hwservicemanager
     start boot-1-0
@@ -67,6 +66,11 @@ on boot
     # Workaround for adb not coming up
     setprop sys.usb.config adb
     wait /sbin/patchlevel_set
+
+# This helps fix ld.config.txt errors from the linker on Android 8.1+
+service ldconfigtxt /sbin/touch /sbin/ld.config.txt
+    oneshot
+    seclabel u:r:recovery:s0
 
 service boot-1-0 /sbin/android.hardware.boot@1.0-service
     user root

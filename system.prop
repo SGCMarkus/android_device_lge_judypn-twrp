@@ -4,4 +4,4 @@ ro.lge.lcd_default_brightness=178
 sys.usb.controller=a600000.dwc3
 ro.product.board=sdm845
 ro.board.platform=sdm845
-ro.build.version.security_patch=2099-12-31
+ro.build.version.security_patch=2025-12-31
