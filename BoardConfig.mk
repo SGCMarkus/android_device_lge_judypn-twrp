@@ -57,6 +57,7 @@ BOARD_KERNEL_CMDLINE += swiotlb=2048 androidboot.configfs=true
 BOARD_KERNEL_CMDLINE += androidboot.usbcontroller=a600000.dwc3
 BOARD_KERNEL_CMDLINE += loop.max_part=7
 BOARD_KERNEL_CMDLINE += androidboot.hardware=judypn
+BOARD_KERNEL_CMDLINE += androidboot.fastboot=1
 BOARD_KERNEL_CMDLINE += disable_skip_initramfs
 BOARD_KERNEL_CMDLINE += androidboot.selinux=permissive
 TARGET_KERNEL_ARCH := arm64
