@@ -25,12 +25,16 @@
 # ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #
 
-import /init.recovery.judypn_decrypt.rc
+import /init.recovery.judy_decrypt.rc
 
 on init
     export ANDROID_ROOT /system_root
+    start logd
+    start hwservicemanager
     start boot-1-0
-    start patchlevel
+    start prepdecrypt
+    start time_daemon
+    setprop crypto.ready 1
 
 on fs
     wait /dev/block/platform/soc/${ro.boot.bootdevice}
@@ -39,6 +43,10 @@ on fs
     chown system drmrpc /dev/qseecom
     chmod 0664 /dev/ion
     chown system system /dev/ion
+    install_keyring
+
+on early-fs
+    start vold
 
 on post-fs
     chown system system /persist-lg
@@ -66,15 +74,32 @@ service boot-1-0 /sbin/android.hardware.boot@1.0-service
     disabled
     seclabel u:r:recovery:s0
 
-service tui_comm-1-0 /vendor/bin/hw/vendor.qti.hardware.tui_comm@1.0-service-qti
-    class hal
-    user system
-    group system drmrpc 
+# Separate copy needed to use /sbin/linker64 instead of /system/bin/linker64
+service sbinqseecomd /sbin/qseecomd
+    user root
+    group root
+    disabled
+    seclabel u:r:recovery:s0
 
-service qteeconnector-hal-1-0 /vendor/bin/hw/vendor.qti.hardware.qteeconnector@1.0-service
-    class hal
-    user system
-    group system
+service prepdecrypt /sbin/prepdecrypt.sh
+    oneshot
+    disabled
+    user root
+    group root
+    seclabel u:r:recovery:s0
+
+service hwservicemanager /sbin/hwservicemanager
+    user root
+    group root
+    disabled
+    onrestart setprop hwservicemanager.ready false
+    seclabel u:r:recovery:s0
+
+service servicemanager /sbin/servicemanager
+    user root
+    group root readproc
+    disabled
+    seclabel u:r:recovery:s0
 
 service keystore_auth /sbin/keystore_auth
     oneshot
@@ -83,73 +108,51 @@ service keystore_auth /sbin/keystore_auth
     disabled
     seclabel u:r:recovery:s0
 
-service keystore /sbin/keystore /data/misc/keystore
+# keystore is started and stopped on demand by TWRP
+service keystore /sbin/keystore /tmp/misc/keystore
     user root
     group root drmrpc readproc
     disabled
     seclabel u:r:recovery:s0
 
-service gatekeeper-1-0 /vendor/bin/hw/android.hardware.gatekeeper@1.0-service
+service gatekeeper-1-0 /sbin/android.hardware.gatekeeper@1.0-service-qti
     user root
     group root
     disabled
     seclabel u:r:recovery:s0
 
-service gatekeeperd /system/bin/gatekeeperd /data/misc/gatekeeper
-    class late_start
-    user system
-    writepid /dev/cpuset/system-background/tasks
+service keymaster-3-0 /sbin/android.hardware.keymaster@3.0-service-qti
+    user root
+    group root
+    disabled
+    seclabel u:r:recovery:s0
 
-on property:fde.ready=1 && property:patchlevel.done=*
-    start ven_qseecomd
-    exec - system system -- /vendor/bin/init.qti.qseecomd.sh
+service logd /sbin/logd
+    user root
+    group root
+    disabled
+    seclabel u:r:recovery:s0
 
-on property:crypto.ready=1 && property:patchlevel.done=*
-    start ven_qseecomd
-    exec - system system -- /vendor/bin/init.qti.qseecomd.sh
-
-on property:init.svc.ven_qseecomd=running && property:sys.listeners.registered=true
-    start sys_hwservicemanager
-    start sys_servicemanager
-    start vndservicemanager
-
-on property:init.svc.sys_hwservicemanager=running && property:hwservicemanager.ready=true
-    start ven_keymaster-3-0-qti
-    start gatekeeper-1-0
-    start gatekeeperd
+service time_daemon /sbin/time_daemon
+    user root
+    group root
+    disabled
+    seclabel u:r:recovery:s0
 
 on property:crypto.ready=0
-    stop ven_qseecomd
-    stop sys_servicemanager
-    stop ven_keymaster-3-0-qti
+    stop sbinqseecomd
+    stop keymaster-3-0
     stop gatekeeper-1-0
-    stop gatekeeperd
+    stop servicemanager
 
-on property:product.lge.vold.publicvolume_uuid=*
-    setprop vendor.lge.vold.publicvolume_uuid ${product.lge.vold.publicvolume_uuid}
+on property:crypto.ready=1
+    start sbinqseecomd
 
-service patchlevel /sbin/patchlevel.sh
-    user root
-    group root
-    disabled
-    oneshot
-    seclabel u:r:recovery:s0
+on property:vendor.sys.listeners.registered=true
+    start keymaster-3-0
+    start gatekeeper-1-0
+    start servicemanager
+    restart time_daemon
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+on property:sys.usb.config=mtp,adb
+    restart time_daemon

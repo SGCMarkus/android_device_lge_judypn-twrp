@@ -64,10 +64,11 @@ TARGET_KERNEL_ARCH := arm64
 TARGET_KERNEL_HEADER_ARCH := arm64
 BOARD_KERNEL_BASE := 0x00000000
 BOARD_KERNEL_PAGESIZE := 4096
-TARGET_PREBUILT_DTBO := device/lge/judypn/prebuilt/dtbo.img
+BOARD_PREBUILT_DTBOIMAGE := $(LOCAL_PATH)/prebuilt/dtbo.img
 BOARD_MKBOOTIMG_ARGS := --header_version $(BOARD_BOOTIMG_HEADER_VERSION)
-BOARD_MKBOOTIMG_ARGS += --recovery_dtbo $(TARGET_PREBUILT_DTBO)
-TARGET_PREBUILT_KERNEL := device/lge/judypn/prebuilt/Image.gz-dtb
+#BOARD_MKBOOTIMG_ARGS += --recovery_dtbo $(TARGET_PREBUILT_DTBO)
+TARGET_PREBUILT_KERNEL := $(LOCAL_PATH)/prebuilt/Image.gz-dtb
+BOARD_INCLUDE_RECOVERY_DTBO := true
 
 # Platform
 TARGET_BOARD_PLATFORM := sdm845
@@ -83,6 +84,9 @@ BOARD_SYSTEMIMAGE_PARTITION_SIZE := 4756340736
 BOARD_USERDATAIMAGE_PARTITION_SIZE := 113775689728
 BOARD_VENDORIMAGE_PARTITION_SIZE := 1207959552
 BOARD_USERDATAIMAGE_FILE_SYSTEM_TYPE := ext4
+
+TARGET_USERIMAGES_USE_EXT4 := true
+TARGET_USERIMAGES_USE_F2FS := true
 
 # Partitions (listed in the file) to be wiped under recovery.
 TARGET_RECOVERY_WIPE := $(LOCAL_PATH)/recovery.wipe
@@ -100,7 +104,10 @@ TARGET_USES_QCOM_BSP := true
 BOARD_HAS_LARGE_FILESYSTEM := true
 BOARD_HAS_NO_SELECT_BUTTON := true
 AB_OTA_UPDATER := true
+BOARD_USES_RECOVERY_AS_BOOT := true
 BOARD_BUILD_SYSTEM_ROOT_IMAGE := true
+#BOARD_PROVIDES_GPTUTILS := true
+#USE_COMMON_BOOTCTRL := false
 
 # A/B updater updatable partitions list. Keep in sync with the partition list
 # with "_a" and "_b" variants in the device. Note that the vendor can add more
@@ -132,8 +139,7 @@ TW_INCLUDE_NTFS_3G := true
 TW_INPUT_BLACKLIST := "hbtp_vm"
 TW_HAS_EDL_MODE := true
 
-TARGET_RECOVERY_DEVICE_MODULES += tzdata
-TARGET_RECOVERY_DEVICE_MODULES += android.hardware.boot@1.0 android.hidl.base@1.0 libcryptfs_hw
+TARGET_RECOVERY_DEVICE_MODULES += android.hardware.boot@1.0
 
 TARGET_RECOVERY_PIXEL_FORMAT := BGRA_8888
 TARGET_RECOVERY_QCOM_RTC_FIX := true
@@ -150,24 +156,14 @@ BOARD_SUPPRESS_SECURE_ERASE := true
 TW_IGNORE_MISC_WIPE_DATA := true
 
 # Custom Platform Version and Security Patch
-# TWRP Defaults
-#PLATFORM_VERSION := 16.1.0
-#PLATFORM_SECURITY_PATCH := 2025-12-05
-# Must match build.prop of current system for vold decrypt to work properly!
-PLATFORM_VERSION := 10.0.0
-# OTA V405EBW v20a
-PLATFORM_SECURITY_PATCH := 2020-07-01
+PLATFORM_VERSION := 16.1.0
+PLATFORM_SECURITY_PATCH := 2099-12-31
 
 # Encryption
-TARGET_HW_DISK_ENCRYPTION := true
-TARGET_CRYPTFS_HW_PATH := vendor/qcom/opensource/commonsys/cryptfs_hw
 TW_INCLUDE_CRYPTO := true
 TW_INCLUDE_CRYPTO_FBE := true
-TARGET_USE_UFS_ICE := true
-TARGET_HW_DISK_ENCRYPTION := true
-LEGACY_HW_DISK_ENCRYPTION := true
-TW_CRYPTO_USE_SYSTEM_VOLD := hwservicemanager servicemanager qseecomd keymaster-3-0-qti
-TW_CRYPTO_SYSTEM_VOLD_MOUNT := vendor firmware persist-lg system_root
+TW_INCLUDE_FBE_METADATA_DECRYPT := true
+BOARD_USES_METADATA_PARTITION := true
 
 # TWRP Debug Flags
 #TWRP_EVENT_LOGGING := true
@@ -177,4 +173,3 @@ TWRP_INCLUDE_LOGCAT := true
 #TW_RECOVERY_ADDITIONAL_RELINK_FILES += $(OUT)/system/bin/debuggerd $(OUT)/system/xbin/strace
 #TARGET_RECOVERY_DEVICE_MODULES += twrpdec
 #TW_RECOVERY_ADDITIONAL_RELINK_FILES += $(TARGET_RECOVERY_ROOT_OUT)/sbin/twrpdec
-TW_CRYPTO_SYSTEM_VOLD_DEBUG := true
