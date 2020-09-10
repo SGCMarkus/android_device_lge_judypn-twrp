@@ -25,6 +25,11 @@
 # ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #
 
+# Firmware directory Path
+# Below macro will be read by uevent and path will
+# be added to search path for firmware loading
+firmware_directories /vendor/firmware_mnt/image/
+
 # the DIAG device node is not world writable/readable.
 /dev/diag                 0666   system     diag
 
@@ -112,7 +117,7 @@
 /dev/mhi_pipe_16          0640   radio      radio
 /dev/mhi_pipe_32          0640   radio      radio
 /dev/at_usb0              0640   radio      radio
-/dev/at_mdm0              0640   radio      radio
+/dev/at_mdm0              0660   radio      radio
 /dev/video*               0660   system     camera
 /dev/media*               0660   system     camera
 /dev/v4l-subdev*          0660   system     camera
@@ -202,6 +207,15 @@
 /dev/dvb/adapter0/dvr*    0660   media       media
 /dev/dvb/adapter0/video*  0660   media       media
 
+# TDMB
+/dev/broadcast0           0660   media       media
+
+# SBTVD(Brazil)
+/dev/broadcast1           0660   media       media
+
+# ISDBT(Japan)
+/dev/broadcast_isdbt      0660   media       media
+
 # Broadcast devices
 /dev/tsc_mux0             0660   media       media
 /dev/tsc_ci0              0660   media       media
@@ -243,6 +257,8 @@
 /sys/devices/virtual/input/input*                   enable_ps_sensor 0660  system   input
 /sys/devices/virtual/input/input*                   set_delay_ms     0660  system   input
 /sys/devices/virtual/input/input*                   do_flush         0660  system   input
+/sys/devices/virtual/input/input*                   laser_offset_calibrate         0660  system   input
+/sys/devices/virtual/input/input*                   ldaf_thread_pause         0660  system   input
 
 # vm_bms
 /dev/vm_bms               0660   system     system
@@ -297,14 +313,12 @@
 # Kmsg device
 /dev/kmsg                                               0620   root       system
 
+# LGDDM
+#/dev/lge_ddm_tty0         0660   system     system
+
 # t-base
 /dev/mobicore             0600   system     system
 /dev/mobicore-user        0666   system     system
 
-/*
-# TDMB
-/dev/broadcast0           0660   media      media
-
-# LGDDM
-/dev/lge_ddm_tty0         0660   system     system
-*/
+# USB
+/sys/class/android_usb/* state 0444 root system

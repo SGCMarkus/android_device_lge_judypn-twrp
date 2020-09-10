@@ -28,6 +28,7 @@
 import /init.recovery.judy_decrypt.rc
 
 on init
+    export ANDROID_ROOT /system_root
     start logd
     start hwservicemanager
     start boot-1-0
